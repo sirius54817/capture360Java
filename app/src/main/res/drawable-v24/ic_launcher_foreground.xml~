@@ -1,0 +1,12 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <!-- Image as Background -->
+    <ImageView
+        android:layout_width="108dp"
+        android:layout_height="108dp"
+        android:src="@drawable/logop" /> <!-- Replace with your image name -->
+    <!-- Your vector drawable -->
+</RelativeLayout>

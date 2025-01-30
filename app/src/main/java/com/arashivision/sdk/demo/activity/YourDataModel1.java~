@@ -1,0 +1,33 @@
+package com.arashivision.sdk.demo.model;
+
+public class YourDataModel1 {
+    private int id; // Assuming this is an int
+    private String name; // Assuming this is a String
+    private String data; // Assuming this is a String
+    private boolean someBoolean; // Assuming this is a boolean
+
+    // Constructor
+    public YourDataModel1(int id, String name, String data, boolean someBoolean) {
+        this.id = id;
+        this.name = name;
+        this.data = data;
+        this.someBoolean = someBoolean;
+    }
+
+    // Getters
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public boolean isSomeBoolean() {
+        return someBoolean;
+    }
+}

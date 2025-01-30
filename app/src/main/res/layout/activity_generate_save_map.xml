@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- FrameLayout to hold PathView and Zoom buttons on top -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="677dp">
+
+        <!-- PathView: Custom view for drawing the path (Main content) -->
+        <com.arashivision.sdk.demo.activity.PathView
+            android:id="@+id/pathView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#000000" />
+
+        <!-- Zoom Buttons on top of PathView -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:gravity="end|top"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <!-- Zoom In Button -->
+            <Button
+                android:id="@+id/zoomInButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text=" + "
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
+            <!-- Zoom Out Button -->
+            <Button
+                android:id="@+id/zoomOutButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" - "
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <!-- Buttons for Save and Clear -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Save Map"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorAccent"/>
+
+        <Button
+            android:id="@+id/clearButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Clear Path"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorAccent"/>
+    </LinearLayout>
+
+    <!-- Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone" />
+
+</LinearLayout>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".activity.LoadTrackMapActivity">
+
+    <!-- PathView: Custom view to display the map -->
+    <com.arashivision.sdk.demo.activity.PathView
+        android:id="@+id/pathView"
+        android:layout_width="match_parent"
+        android:layout_height="750dp"
+        android:layout_above="@id/progressBar"
+        android:layout_below="@id/timerTextView"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="-713dp"
+        android:background="@android:color/black"
+        app:layout_constraintHeight_percent="0.7" />
+
+    <!-- Timer TextView: Displays the elapsed time -->
+    <TextView
+        android:id="@+id/timerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="24sp"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="20dp" />
+
+    <!-- ProgressBar: Displays loading progress -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.ProgressBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <!-- LinearLayout with buttons at the bottom -->
+    <LinearLayout
+        android:layout_width="389dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:orientation="horizontal">  <!-- Margin for spacing -->
+
+        <!-- Smaller Buttons with consistent size -->
+        <Button
+            android:id="@+id/btn_connect_by_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:padding="8dp"
+            android:text="Connect Camera"
+            android:textSize="14sp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorAccent"
+            android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/btn_normal_record_start"
+            android:layout_width="9dp"
+            android:layout_height="22dp"
+            android:padding="8dp"
+            android:text="StartN"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorAccent"/>
+
+        <Button
+            android:id="@+id/btn_normal_record_stop"
+            android:layout_width="10dp"
+            android:layout_height="17dp"
+            android:padding="8dp"
+            android:text="StopN"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorAccent"/>
+
+        <Button
+            android:id="@+id/btn_start_record"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:padding="8dp"
+            android:text="Start"
+            android:textSize="14sp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorAccent"
+            android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/btn_stop_record"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:padding="8dp"
+            android:text="Stop"
+            android:textSize="14sp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorAccent"
+            android:visibility="invisible"/>
+    </LinearLayout>
+
+    <!-- Zoom Buttons at the top-right corner -->
+    <Button
+        android:id="@+id/zoomInButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="+" />
+
+    <Button
+        android:id="@+id/zoomOutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/zoomInButton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="-" />
+</RelativeLayout>
