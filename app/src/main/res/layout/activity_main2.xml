@@ -3,37 +3,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#F9F9F9">
 
-
-<!--    <TextView-->
-<!--        android:id="@+id/planData"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:layout_below="@+id/btn_connect_by_wifi"-->
-<!--        android:text="Plan Details"-->
-<!--        android:textColor="#000"-->
-<!--        android:textSize="18sp" />-->
+    <!-- Header or Plan Details TextView -->
+    <TextView
+        android:id="@+id/planData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_gravity="center"
+        android:background="@drawable/partial_border"
+        android:gravity="center"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="Plan Details"
+        android:textColor="#ffffff"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:elevation="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />  />
 
     <!-- RecyclerView to show card views -->
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="604dp"
+        android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical"
+        android:clipToPadding="false"/>
 
+    <!-- Button to trigger map generation -->
     <Button
         android:id="@+id/buttonGoToMapping"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Generate map"
+        android:textColor="#fff"
+        android:background="@drawable/button_background"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:text="Generate map" />
-
-
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp" />
 
 </LinearLayout>

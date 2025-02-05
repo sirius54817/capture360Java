@@ -87,11 +87,13 @@ public class MainActivity2 extends AppCompatActivity implements DownloadActivity
 
     private EditText editTextDescription;
     private TextView tvProjectId;
+    private TextView tvProject;
     private TextView tvPlanName;
     private TextView tvPlanId;
     private TextView textResponse;
     private TextView tvStatus;
     private int projectId;
+    private int project;
     private String planName;
     private Integer planId; // Use Integer to allow null values
     private TextView mTvCaptureTime;
@@ -114,6 +116,7 @@ public class MainActivity2 extends AppCompatActivity implements DownloadActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
         // Setting up a network request proxy
         OscManager.getInstance().setOscRequestDelegate(new OscRequestDelegate());
@@ -144,6 +147,7 @@ public class MainActivity2 extends AppCompatActivity implements DownloadActivity
 
         mTvCaptureTime = findViewById(R.id.tv_capture_time);
         tvProjectId = findViewById(R.id.tv_project_id);
+        tvProject = findViewById(R.id.tv_project);
         tvPlanName = findViewById(R.id.tv_plan_name);
         tvPlanId = findViewById(R.id.tv_plan_id);
         editTextDescription = findViewById(R.id.et_description);
@@ -156,7 +160,8 @@ public class MainActivity2 extends AppCompatActivity implements DownloadActivity
 
         Intent intent = getIntent();
         if (intent != null) {
-            projectId = intent.getIntExtra("project", -1); // Use getIntExtra for int
+            projectId = intent.getIntExtra("PROJECT_ID", -1); // Use getIntExtra for int
+            project = intent.getIntExtra("project", -1);
             planName = intent.getStringExtra("PLAN_NAME");
             planId = (Integer) intent.getSerializableExtra("MAP_ID");
 
@@ -169,6 +174,7 @@ public class MainActivity2 extends AppCompatActivity implements DownloadActivity
 
             // Display the current project ID, plan name, and plan ID
             tvProjectId.setText("Project ID: " + (projectId != -1 ? String.valueOf(projectId) : "Not Available"));
+            tvProject.setText("Project: " + (project != -1 ? String.valueOf(project) : "Not Available"));
             tvPlanName.setText("Plan Name: " + (planName != null ? planName : "Not Available"));
             tvPlanId.setText("Plan ID: " + (planId != null ? planId.toString() : "Not Available"));
         } else {
@@ -915,7 +921,7 @@ private class UploadVideoTask extends AsyncTask<Void, Integer, String> {
             dos.writeBytes(twoHyphens + boundary + lineEnd);
             dos.writeBytes("Content-Disposition: form-data; name=\"plan\"" + lineEnd);
             dos.writeBytes(lineEnd);
-            dos.writeBytes("1" + lineEnd);
+            dos.writeBytes(planId + lineEnd);
 
             dos.writeBytes(twoHyphens + boundary + lineEnd);
             dos.writeBytes("Content-Disposition: form-data; name=\"json\"" + lineEnd);

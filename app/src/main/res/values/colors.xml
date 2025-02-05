@@ -1,6 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Primary Color (Purple) -->
     <color name="colorPrimary">#6200EE</color>
+
+    <!-- Darker Primary Color (Deep Purple) -->
     <color name="colorPrimaryDark">#3700B3</color>
+
+    <!-- Accent Color (Teal) -->
     <color name="colorAccent">#03DAC5</color>
+
+    <!-- Background Color -->
+    <color name="backgroundColor">#F4F6F9</color>
+
+    <!-- Text Colors -->
+    <color name="textPrimary">#212121</color>
+    <color name="textSecondary">#757575</color>
 </resources>

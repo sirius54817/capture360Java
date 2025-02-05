@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-</selector>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#0F0E0E"/> <!-- Lighter background for hover effect -->
+    <corners android:radius="5dp"/> <!-- Border radius -->
+    <stroke android:color="#F4F4F1" android:width="2.5dp"/> <!-- Border color and width -->
+</shape>

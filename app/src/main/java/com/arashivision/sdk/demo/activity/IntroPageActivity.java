@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,7 +48,10 @@ public class IntroPageActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
         new FetchProjectsTask().execute("https://api.capture360.ai/building/project/");
+
     }
 
     private class FetchProjectsTask extends AsyncTask<String, Void, List<IntroModel>> {
@@ -133,4 +137,6 @@ public class IntroPageActivity extends AppCompatActivity {
         intent.putExtra("PROJECT_ID", projectId);
         startActivity(intent);
     }
+
+
 }

@@ -29,22 +29,26 @@ public class MainActivity1 extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ProjectAdapter adapter;
     private static final String TAG = "MainActivity1";
+    private int projectId; // Member variable to hold the project ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main1);
 
+        // Retrieve the project ID from the intent
+        projectId = getIntent().getIntExtra("PROJECT_ID", -1); // -1 is the default value if not found
+        Log.d(TAG, "Received project ID: " + projectId);
+
         recyclerView = findViewById(R.id.recyclerView);
-
-        // Initialize RecyclerView with correct adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
-        // Corrected ProjectAdapter initialization with a single OnItemClickListener
+        // Initialize the adapter with a click listener
         adapter = new ProjectAdapter(new ArrayList<>(), new ProjectAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int projectId) {
-                navigateToPlanDetails(projectId);
+            public void onItemClick(int project) {
+                navigateToFloorDetails(project, projectId); // Pass both project and projectId
             }
         });
 
@@ -68,6 +72,9 @@ public class MainActivity1 extends AppCompatActivity {
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
+
+                int responseCode = urlConnection.getResponseCode();
+                Log.d(TAG, "Response Code: " + responseCode);
 
                 // Read the input stream into a String
                 InputStream inputStream = urlConnection.getInputStream();
@@ -124,13 +131,13 @@ public class MainActivity1 extends AppCompatActivity {
             JSONArray jsonArray = new JSONArray(responseData);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                int projectId = jsonObject.getInt("project");
+                int project = jsonObject.getInt("project");
                 String image = "https://api.capture360.ai/" + jsonObject.getString("image");
                 String totalFloors = jsonObject.isNull("total_floors") ? null : jsonObject.getString("total_floors");
                 String noOfEmployees = jsonObject.isNull("no_of_employees") ? null : jsonObject.getString("no_of_employees");
                 String planDetailsUrl = jsonObject.isNull("plan_details_url") ? null : jsonObject.getString("plan_details_url");
 
-                YourDataModel dataModel = new YourDataModel(projectId, image, totalFloors, noOfEmployees);
+                YourDataModel dataModel = new YourDataModel(project, image, totalFloors, noOfEmployees);
                 dataModel.setPlanDetailsUrl(planDetailsUrl); // Set planDetailsUrl
                 dataList.add(dataModel);
             }
@@ -140,32 +147,13 @@ public class MainActivity1 extends AppCompatActivity {
         return dataList;
     }
 
-    // Method to navigate to PlanDetailsActivity
-    private void navigateToPlanDetails(int projectId) {
-        // Base URL for plan details
-        String basePlanDetailsUrl = "https://api.capture360.ai/building/plans/project/";
-        Log.d(TAG, "navigateToPlanDetails: " + basePlanDetailsUrl);
-        Log.d(TAG, "navigateToPlanDetails: " + projectId);
-
-        // Construct the complete URL with projectId
-        String planDetailsUrl = basePlanDetailsUrl + projectId + "/";
-
-        // Create an intent to launch PlanDetailsActivity
-        Intent intent = new Intent(MainActivity1.this, PlanDetailsActivity.class);
-        intent.putExtra("PLAN_DETAILS_URL", planDetailsUrl); // Pass the complete URL as extra
-
-        // Start the activity
+    // Method to navigate to FloorDetailsActivity
+    private void navigateToFloorDetails(int project, int projectId) {
+        Intent intent = new Intent(MainActivity1.this, FloorDetailsActivity.class);
+        intent.putExtra("project", project); // Pass the project
+        intent.putExtra("PROJECT_ID", projectId); // Pass the projectId
+        Log.d(TAG, "Navigating to FloorDetailsActivity with project: " + project + " and projectId: " + projectId);
         startActivity(intent);
     }
 
-    // Method to navigate to MainActivity2
-    private void navigateToMainActivity2(int projectId) {
-        // Create an intent to launch MainActivity2/IntroPageActivity
-        Intent intent = new Intent(MainActivity1.this, IntroPageActivity.class);
-        intent.putExtra("project", projectId); // Pass the projectId
-        Log.d(TAG, "navigateToMainActivity2: " + projectId);
-
-        // Start the activity
-        startActivity(intent);  
-    }
 }

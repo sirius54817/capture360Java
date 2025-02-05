@@ -61,7 +61,7 @@ public class MappingFunctionTrack extends AppCompatActivity implements SensorEve
 
     private static final int REQUEST_CODE = 1;
     private static final float STEP_DISTANCE = 0.75f; // Distance moved per step
-    private static final String API_URL = "https://3343-106-219-178-23.ngrok-free.app/building/"; // Update with your actual API URL
+    private static final String API_URL = "https://14ce-59-97-51-97.ngrok-free.app/building/"; // Update with your actual API URL
     private static final String TAG = "MappingFunctionTrack";
 
     private SensorManager sensorManager;

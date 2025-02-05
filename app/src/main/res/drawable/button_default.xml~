@@ -13,7 +13,7 @@
         <shape>
             <solid android:color="#52F4D4"/> <!-- Button background color -->
             <corners android:radius="5dp"/> <!-- Border radius -->
-            <stroke android:color="#262525" android:width="2.5dp"/> <!-- Border color and width -->
+            <stroke android:color="#5F5B5B" android:width="2.5dp"/> <!-- Border color and width -->
             <padding
                 android:left="8dp"
                 android:top="8dp"

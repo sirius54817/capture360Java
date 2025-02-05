@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +21,7 @@ public class PlanDetailsAdapter extends RecyclerView.Adapter<PlanDetailsAdapter.
     private Context context;
     private List<YourDataModel1> dataList;
     private OnItemClickListener listener;
+    private int lastPosition = -1; // Initialize lastPosition
 
     public interface OnItemClickListener {
         void onItemClick(YourDataModel1 data);
@@ -40,8 +43,19 @@ public class PlanDetailsAdapter extends RecyclerView.Adapter<PlanDetailsAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         YourDataModel1 data = dataList.get(position);
-        holder.textView.setText(data.getName());
+        holder.textViewTitle.setText(data.getName());
         holder.itemView.setOnClickListener(v -> listener.onItemClick(data));
+
+        // Call setAnimation to animate the item
+        setAnimation(holder.itemView, position);
+    }
+
+    private void setAnimation(View viewToAnimate, int position) {
+        if (position > lastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.item_animation);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position; // Update lastPosition
+        }
     }
 
     @Override
@@ -56,11 +70,13 @@ public class PlanDetailsAdapter extends RecyclerView.Adapter<PlanDetailsAdapter.
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;
+        TextView textViewTitle;
+        TextView textViewDescription;
 
         ViewHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.textView);
+            textViewTitle = itemView.findViewById(R.id.itemTitle);
+            textViewDescription = itemView.findViewById(R.id.itemDescription);
         }
     }
 }

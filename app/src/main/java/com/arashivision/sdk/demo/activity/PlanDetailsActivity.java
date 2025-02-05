@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
+import android.view.MotionEvent;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,12 +35,14 @@ public class PlanDetailsActivity extends AppCompatActivity {
     private PlanDetailsAdapter adapter;
     private List<YourDataModel1> dataList = new ArrayList<>();
     private Button buttonGoToMapping;
-    private String projectId;
+    private int projectId; // Variable to hold project ID as an integer
+    private int project; // Variable to hold project
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
         // Initialize RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
@@ -52,6 +56,8 @@ public class PlanDetailsActivity extends AppCompatActivity {
                 Intent intent = new Intent(PlanDetailsActivity.this, MainActivity2.class);
                 intent.putExtra("MAP_ID", data.getId()); // Pass the ID of the selected map
                 intent.putExtra("PLAN_NAME", data.getName()); // Pass the name of the plan
+                intent.putExtra("project", project); // Pass the project
+                intent.putExtra("PROJECT_ID", projectId);//pass the project id
                 startActivity(intent);
             }
         });
@@ -62,16 +68,37 @@ public class PlanDetailsActivity extends AppCompatActivity {
         buttonGoToMapping.setOnClickListener(v -> {
             Log.d("PlanDetailsActivity", "Go to Map button clicked");
             Intent intent = new Intent(PlanDetailsActivity.this, GenerateSaveMapActivity.class);
-            intent.putExtra("project", projectId);  // Pass the projectId to GenerateSaveMapActivity
+            intent.putExtra("PROJECT_ID", projectId);  // Pass the projectId to GenerateSaveMapActivity
             intent.putExtra("PLAN_NAME", "Your Plan Name"); // Replace with actual plan name from fetched data
             intent.putExtra("MAP_ID", 1); // Replace with actual plan ID based on your data
             startActivity(intent);
         });
 
-        // Get project ID from intent passed from MainActivity
+        buttonGoToMapping.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Scale the button when pressed
+                        v.setScaleX(0.95f);
+                        v.setScaleY(0.95f);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        // Return to original size when released
+                        v.setScaleX(1f);
+                        v.setScaleY(1f);
+                        break;
+                }
+                return false; // Return false to allow other touch events
+            }
+        });
+
+        // Get project and PROJECT_ID from intent passed from MainActivity
         Intent intent = getIntent();
-        projectId = intent.getStringExtra("project");
-        Log.d("PlanDetailsActivity", "Received project ID: " + projectId);
+        project = intent.getIntExtra("project", -1); // Get project as an integer
+        projectId = intent.getIntExtra("PROJECT_ID", -1); // Get projectId as an integer
+        Log.d("PlanDetailsActivity", "Received project: " + project + " and project ID: " + projectId);
 
         // Fetch data from the API
         fetchDataFromApi("https://api.capture360.ai/building/getFloorPlan/");
