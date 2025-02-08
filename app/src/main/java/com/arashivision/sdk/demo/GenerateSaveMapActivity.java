@@ -43,7 +43,7 @@ public class GenerateSaveMapActivity extends AppCompatActivity implements Sensor
 
     private static final int REQUEST_CODE = 1;
     private static final float STEP_DISTANCE = 0.40f; // Distance moved per step
-    private static final String BASE_API_URL = "https://api.capture360.ai/building/generate_floor_plan/";
+    private static final String BASE_API_URL = "https://c47d-59-97-51-97.ngrok-free.app/building/generate_floor_plan/";
     private static final String TAG = "GenerateSaveMapActivity";
 
     private SensorManager sensorManager;
@@ -58,6 +58,7 @@ public class GenerateSaveMapActivity extends AppCompatActivity implements Sensor
     private float lastStepCount = 0;
     private ArrayList<String> mapNames = new ArrayList<>();
     private int project; // Use "project" instead of "projectId"
+    private int floorId; // Variable to hold the floor ID
 
     private long startTime = 0; // Timer for the start of the map drawing
     private long lastStepTime = 0; // Last time step was taken
@@ -70,6 +71,10 @@ public class GenerateSaveMapActivity extends AppCompatActivity implements Sensor
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generate_save_map);
 
+        // Retrieve the floorId from the intent
+        floorId = getIntent().getIntExtra("FLOOR_ID", -1); // Default value if not found
+        Log.d(TAG, "Received floorId: " + floorId);
+
         // Fetch the current project from the API
         fetchProjectId();
 
@@ -79,7 +84,7 @@ public class GenerateSaveMapActivity extends AppCompatActivity implements Sensor
     }
 
     private void fetchProjectId() {
-        new FetchProjectIdTask().execute("https://api.capture360.ai/building/projectlist/");
+        new FetchProjectIdTask().execute("https://c47d-59-97-51-97.ngrok-free.app/building/projectlist/");
     }
 
     private class FetchProjectIdTask extends AsyncTask<String, Void, Integer> {
@@ -299,6 +304,7 @@ public class GenerateSaveMapActivity extends AppCompatActivity implements Sensor
         builder.setPositiveButton("Save", (dialog, which) -> {
             String mapName = mapNameInput.getText().toString().trim();
             if (validateMapName(mapName)) {
+                Log.d(TAG, "Saving map with floorId: " + floorId);
                 saveMapToApi(mapName, pathView.getPathAsJson());
             }
         });
@@ -323,6 +329,7 @@ public class GenerateSaveMapActivity extends AppCompatActivity implements Sensor
         try {
             mapJson.put("name", mapName);
             mapJson.put("data", jsonData);
+            mapJson.put("plan", floorId); // Use the floorId for the "plan" field
 
             // Add timing information (total duration and step durations)
             long totalDurationMillis = SystemClock.elapsedRealtime() - startTime;
@@ -344,6 +351,7 @@ public class GenerateSaveMapActivity extends AppCompatActivity implements Sensor
             Toast.makeText(this, "Error creating JSON data.", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private static class SaveTask extends AsyncTask<Void, Void, Integer> {
         private final String jsonData;

@@ -155,4 +155,5 @@ public class MainActivity1 extends AppCompatActivity {
         Log.d(TAG, "Navigating to FloorDetailsActivity with project: " + project + " and projectId: " + projectId);
         startActivity(intent);
     }
+
 }

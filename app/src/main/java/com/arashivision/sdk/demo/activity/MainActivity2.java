@@ -892,7 +892,7 @@ private class UploadVideoTask extends AsyncTask<Void, Integer, String> {
 
     private String uploadFile(String description, String floorId, Uri videoUri) {
         Log.d("uploadFile:", "Function called line 888");
-        String apiUrl = "https://api.capture360.ai/building/api/video/upload/";
+        String apiUrl = "https://c47d-59-97-51-97.ngrok-free.app/building/api/video/upload/";
         String boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW"; // Ensure this matches server expectations
         String lineEnd = "\r\n";
         String twoHyphens = "--";
@@ -983,7 +983,7 @@ private class UploadVideoTask extends AsyncTask<Void, Integer, String> {
 
     private void startVideoProcessing(String videoId) {
         // Replace apiUrl with your actual endpoint
-        String apiUrl = "https://api.capture360.ai/building/video_processing/?video_id=" + videoId;
+        String apiUrl = "https://c47d-59-97-51-97.ngrok-free.app/building/video_processing/?video_id=" + videoId;
         Log.d("<<<<id>>>>",videoId + "-" + apiUrl);
         new AsyncTask<Void, Void, String>() {
             @Override
@@ -1041,7 +1041,7 @@ private class UploadVideoTask extends AsyncTask<Void, Integer, String> {
     private String uploadFile(String description, String floorId, Uri videoUri) {
         Log.d("uploadFile:", "Function called line 888");
         Log.d("name",description + "-" + floorId + "-" + videoUri);
-        String apiUrl = "https://api.capture360.ai/building/api/video/upload/";
+        String apiUrl = "https://c47d-59-97-51-97.ngrok-free.app/building/api/video/upload/";
         String boundary = "----WebKitFormBoundary7MA4YWxkTrZu0gW"; // Ensure this matches server expectations
         String lineEnd = "\r\n";
         String twoHyphens = "--";

@@ -175,6 +175,7 @@ public class FloorDetailsActivity extends AppCompatActivity {
         intent.putExtra("PLAN_DETAILS_URL", planDetailsUrl);  // Pass the URL for plan details
         intent.putExtra("project", project); // Pass the project
         intent.putExtra("PROJECT_ID", projectId); // Pass the projectId
+        intent.putExtra("id",id);
 
         // Start the PlanDetailsActivity
         startActivity(intent);
@@ -192,6 +193,7 @@ public class FloorDetailsActivity extends AppCompatActivity {
         intent.putExtra("PLAN_DETAILS_URL", planDetailsUrl);  // Pass the URL for plan details
         intent.putExtra("project", project); // Pass the project
         intent.putExtra("PROJECT_ID", projectId); // Pass the projectId
+        intent.putExtra("id",id);
 
 
         // Start the PlanDetailsActivity

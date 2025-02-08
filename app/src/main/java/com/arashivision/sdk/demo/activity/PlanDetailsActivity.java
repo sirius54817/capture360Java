@@ -37,6 +37,7 @@ public class PlanDetailsActivity extends AppCompatActivity {
     private Button buttonGoToMapping;
     private int projectId; // Variable to hold project ID as an integer
     private int project; // Variable to hold project
+    private int floorId; // New variable to hold the floorId filter passed from FloorDetailsActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,7 @@ public class PlanDetailsActivity extends AppCompatActivity {
                 intent.putExtra("MAP_ID", data.getId()); // Pass the ID of the selected map
                 intent.putExtra("PLAN_NAME", data.getName()); // Pass the name of the plan
                 intent.putExtra("project", project); // Pass the project
-                intent.putExtra("PROJECT_ID", projectId);//pass the project id
+                intent.putExtra("PROJECT_ID", projectId); // Pass the projectId
                 startActivity(intent);
             }
         });
@@ -71,6 +72,7 @@ public class PlanDetailsActivity extends AppCompatActivity {
             intent.putExtra("PROJECT_ID", projectId);  // Pass the projectId to GenerateSaveMapActivity
             intent.putExtra("PLAN_NAME", "Your Plan Name"); // Replace with actual plan name from fetched data
             intent.putExtra("MAP_ID", 1); // Replace with actual plan ID based on your data
+            intent.putExtra("FLOOR_ID",floorId);
             startActivity(intent);
         });
 
@@ -94,14 +96,16 @@ public class PlanDetailsActivity extends AppCompatActivity {
             }
         });
 
-        // Get project and PROJECT_ID from intent passed from MainActivity
+        // Get project and PROJECT_ID from intent passed from FloorDetailsActivity
         Intent intent = getIntent();
         project = intent.getIntExtra("project", -1); // Get project as an integer
         projectId = intent.getIntExtra("PROJECT_ID", -1); // Get projectId as an integer
+        floorId = intent.getIntExtra("FLOOR_ID", -1); // Get the floorId filter from FloorDetailsActivity
         Log.d("PlanDetailsActivity", "Received project: " + project + " and project ID: " + projectId);
+        Log.d("PlanDetailsActivity", "Received floorId: " + floorId);
 
         // Fetch data from the API
-        fetchDataFromApi("https://api.capture360.ai/building/getFloorPlan/");
+        fetchDataFromApi("https://c47d-59-97-51-97.ngrok-free.app/building/getFloorPlan/");
     }
 
     private void fetchDataFromApi(String apiUrl) {
@@ -111,6 +115,8 @@ public class PlanDetailsActivity extends AppCompatActivity {
 
     private List<YourDataModel1> parseData(String responseData) {
         List<YourDataModel1> dataList = new ArrayList<>();
+        boolean isMapFound = false; // Flag to check if any map is found for the floorId
+
         if (responseData == null || responseData.isEmpty()) {
             Log.e("parseData", "Response data is empty");
             return dataList;
@@ -122,20 +128,33 @@ public class PlanDetailsActivity extends AppCompatActivity {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 int id = jsonObject.getInt("id");
                 String name = jsonObject.getString("name");
-                String data = jsonObject.getString("data"); // Capture the data
+                String data = jsonObject.getString("data");
+                int floorid = jsonObject.getInt("plan"); // Capture the plan ID
 
-                YourDataModel1 dataModel = new YourDataModel1(id, name, data, true);
-                dataList.add(dataModel);
+                // Check if the floorId from the intent matches the floorid from the API
+                if (floorId == floorid) {
+                    YourDataModel1 dataModel = new YourDataModel1(id, name, data, true);
+                    dataList.add(dataModel);
+                    isMapFound = true; // Map found for the given floorId
 
-                // Log the details about the map
-                Log.d("parseData", "Map ID: " + id + ", Name: " + name + ", Data: " + data);
+                    // Log the details about the map
+                    Log.d("parseData", "Map ID: " + id + ", Name: " + name);
+                    Log.d("parseData", "FloorId: " + floorid);
+                    Log.d("parseData", "Data: " + data);
+                }
             }
             Log.d("parseData", "Parsed " + dataList.size() + " items.");
+
+            // If no map is found for the given floorId, show a message to add a new map
+            if (!isMapFound) {
+                Log.d("parseData", "No maps found for the floorId: " + floorId);
+            }
         } catch (JSONException e) {
             Log.e("parseData", "Error parsing data: " + e.getMessage());
         }
         return dataList;
     }
+
 
     private void displayData(List<YourDataModel1> dataList) {
         // Update the adapter with the fetched data

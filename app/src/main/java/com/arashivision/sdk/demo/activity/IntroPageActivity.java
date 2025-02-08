@@ -50,7 +50,7 @@ public class IntroPageActivity extends AppCompatActivity {
 
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
-        new FetchProjectsTask().execute("https://api.capture360.ai/building/project/");
+        new FetchProjectsTask().execute("https://c47d-59-97-51-97.ngrok-free.app/building/project/");
 
     }
 

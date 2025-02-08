@@ -60,7 +60,7 @@ public class LoginActivity1 extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String username = params[0];
             String password = params[1];
-            String urlString = "https://api.capture360.ai/building/login/";
+            String urlString = "https://c47d-59-97-51-97.ngrok-free.app/building/login/";
             String result = "";
 
             HttpURLConnection urlConnection = null;
