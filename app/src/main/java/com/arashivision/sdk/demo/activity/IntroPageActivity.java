@@ -30,6 +30,7 @@ public class IntroPageActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private IntroProjectAdapter adapter;
     private static final String TAG = "IntroPageActivity";
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,16 @@ public class IntroPageActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // Getting the user_id passed from LoginActivity1
+        userId = getIntent().getIntExtra("user_id", -1);
+
+        if (userId == -1) {
+            Toast.makeText(this, "Invalid user", Toast.LENGTH_SHORT).show();
+            finish(); // Close the activity if user_id is invalid
+            return;
+        }
+
+        // Initialize the adapter and set it to the RecyclerView
         adapter = new IntroProjectAdapter(new ArrayList<>(), new IntroProjectAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int projectId) {
@@ -48,10 +59,11 @@ public class IntroPageActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
+        // Apply slide-in and slide-out animations for the activity transition
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
-        new FetchProjectsTask().execute("https://1d7c-59-97-51-97.ngrok-free.app/building/project/");
-
+        // Fetch the projects data filtered by the user_id
+        new FetchProjectsTask().execute("https://8044-59-97-51-97.ngrok-free.app/building/project/");
     }
 
     private class FetchProjectsTask extends AsyncTask<String, Void, List<IntroModel>> {
@@ -59,6 +71,7 @@ public class IntroPageActivity extends AppCompatActivity {
         @Override
         protected List<IntroModel> doInBackground(String... urls) {
             String urlString = urls[0];
+
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
@@ -104,7 +117,20 @@ public class IntroPageActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<IntroModel> result) {
             if (result != null && !result.isEmpty()) {
-                adapter.updateData(result);
+                // Filter the projects by checking if user_id matches the user field in the project
+                List<IntroModel> filteredProjects = new ArrayList<>();
+                for (IntroModel project : result) {
+                    if (project.getUser() == userId) {
+                        filteredProjects.add(project);
+                    }
+                }
+
+                if (filteredProjects.isEmpty()) {
+                    Toast.makeText(IntroPageActivity.this, "No projects found for this user", Toast.LENGTH_SHORT).show();
+                }
+
+                // Update the adapter with filtered projects
+                adapter.updateData(filteredProjects);
             } else {
                 Toast.makeText(IntroPageActivity.this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
             }
@@ -121,9 +147,10 @@ public class IntroPageActivity extends AppCompatActivity {
                 String projectName = jsonObject.getString("project_name");
                 String companyName = jsonObject.getString("company_name");
                 String location = jsonObject.getString("location");
+                int user = jsonObject.getInt("user"); // Assuming 'user' field contains the user_id
 
-                Log.d(TAG, "Parsed project: ID=" + id + ", Name=" + projectName + ", Company=" + companyName + ", Location=" + location);
-                IntroModel project = new IntroModel(id, projectName, companyName, location);
+                Log.d(TAG, "Parsed project: ID=" + id + ", Name=" + projectName + ", Company=" + companyName + ", Location=" + location + ", User=" + user);
+                IntroModel project = new IntroModel(id, projectName, companyName, location, user);
                 projectList.add(project);
             }
         } catch (JSONException e) {
@@ -137,6 +164,4 @@ public class IntroPageActivity extends AppCompatActivity {
         intent.putExtra("PROJECT_ID", projectId);
         startActivity(intent);
     }
-
-
 }

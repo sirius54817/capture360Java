@@ -55,7 +55,7 @@ public class MainActivity1 extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // Fetch data directly when the activity is created
-        new FetchDataTask().execute("https://1d7c-59-97-51-97.ngrok-free.app/building/projectlist/");
+        new FetchDataTask().execute("https://8044-59-97-51-97.ngrok-free.app/building/projectlist/");
     }
 
     // AsyncTask to fetch data and images
@@ -147,7 +147,7 @@ public class MainActivity1 extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 int project = jsonObject.getInt("project");
-                String image = "https://1d7c-59-97-51-97.ngrok-free.app/" + jsonObject.getString("image");
+                String image = "https://8044-59-97-51-97.ngrok-free.app/" + jsonObject.getString("image");
                 String totalFloors = jsonObject.isNull("total_floors") ? null : jsonObject.getString("total_floors");
                 String noOfEmployees = jsonObject.isNull("no_of_employees") ? null : jsonObject.getString("no_of_employees");
                 String planDetailsUrl = jsonObject.isNull("plan_details_url") ? null : jsonObject.getString("plan_details_url");

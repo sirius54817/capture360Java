@@ -43,7 +43,7 @@ public class GenerateSaveMapActivity extends AppCompatActivity implements Sensor
 
     private static final int REQUEST_CODE = 1;
     private static final float STEP_DISTANCE = 0.40f; // Distance moved per step
-    private static final String BASE_API_URL = "https://1d7c-59-97-51-97.ngrok-free.app/building/generate_floor_plan/";
+    private static final String BASE_API_URL = "https://8044-59-97-51-97.ngrok-free.app/building/generate_floor_plan/";
     private static final String TAG = "GenerateSaveMapActivity";
 
     private SensorManager sensorManager;
@@ -84,7 +84,7 @@ public class GenerateSaveMapActivity extends AppCompatActivity implements Sensor
     }
 
     private void fetchProjectId() {
-        new FetchProjectIdTask().execute("https://1d7c-59-97-51-97.ngrok-free.app/building/projectlist/");
+        new FetchProjectIdTask().execute("https://8044-59-97-51-97.ngrok-free.app/building/projectlist/");
     }
 
     private class FetchProjectIdTask extends AsyncTask<String, Void, Integer> {

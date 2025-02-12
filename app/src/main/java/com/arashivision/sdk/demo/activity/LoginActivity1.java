@@ -15,6 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.arashivision.sdk.demo.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +28,7 @@ import java.net.URL;
 
 public class LoginActivity1 extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity1";
+    private static final String TAG = "LoginActivity1";
 
     private EditText editTextUsername;
     private EditText editTextPassword;
@@ -60,7 +63,7 @@ public class LoginActivity1 extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String username = params[0];
             String password = params[1];
-            String urlString = "https://1d7c-59-97-51-97.ngrok-free.app/building/login/";
+            String urlString = "https://8044-59-97-51-97.ngrok-free.app/building/login/";
             String result = "";
 
             HttpURLConnection urlConnection = null;
@@ -102,19 +105,39 @@ public class LoginActivity1 extends AppCompatActivity {
             super.onPostExecute(result);
             if (!result.isEmpty()) {
                 Log.d(TAG, "Login Response: " + result);
-                // Handle successful login
-                showDialog("Login Successful!", "Welcome user");
-                navigateToHomeActivity();
+
+                try {
+                    // Assuming the response is a JSON object with fields "user_id" (as a number)
+                    JSONObject jsonResponse = new JSONObject(result);
+                    int userId = jsonResponse.getInt("user_id");  // Get user_id as integer
+
+
+                    // Show the dialog with user id
+                    String message = "User ID: " + userId ;
+                    showDialog("Login Successful!", message);
+                    Log.d(TAG,"Login Success : User ID: " + userId);
+
+                    // Pass the user_id to the next activity (IntroPageActivity)
+                    navigateToHomeActivity(userId);
+
+                } catch (JSONException e) {
+                    Log.e(TAG, "Error parsing JSON response: " + e.getMessage());
+                    showDialog("Error", "Failed to parse login response.");
+                }
+
             } else {
                 // Handle login failure
                 showDialog("Login Failed", "Invalid username or password");
             }
         }
     }
-    private void navigateToHomeActivity() {
-        Intent intent = new Intent(LoginActivity1.this,IntroPageActivity.class);
+
+    private void navigateToHomeActivity(int userId) {
+        // Create an intent to navigate to the next activity
+        Intent intent = new Intent(LoginActivity1.this, IntroPageActivity.class);
+        intent.putExtra("user_id", userId);  // Pass user_id as an integer
         startActivity(intent);
-        finish(); // Finish MainActivity to prevent returning back to it with back button
+        finish(); // Finish LoginActivity to prevent returning back to it with back button
     }
 
     private void showDialog(String title, String message) {
@@ -130,5 +153,3 @@ public class LoginActivity1 extends AppCompatActivity {
                 .show();
     }
 }
-
-
