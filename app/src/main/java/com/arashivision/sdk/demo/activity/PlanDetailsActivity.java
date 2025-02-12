@@ -105,7 +105,7 @@ public class PlanDetailsActivity extends AppCompatActivity {
         Log.d("PlanDetailsActivity", "Received floorId: " + floorId);
 
         // Fetch data from the API
-        fetchDataFromApi("https://c47d-59-97-51-97.ngrok-free.app/building/getFloorPlan/");
+        fetchDataFromApi("https://1d7c-59-97-51-97.ngrok-free.app/building/getFloorPlan/");
     }
 
     private void fetchDataFromApi(String apiUrl) {

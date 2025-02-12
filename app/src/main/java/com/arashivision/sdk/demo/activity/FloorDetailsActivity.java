@@ -62,7 +62,7 @@ public class FloorDetailsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // Start fetching floor details for the given project ID
-        new FetchFloorDetailsTask().execute("https://c47d-59-97-51-97.ngrok-free.app/building/plan_details/");
+        new FetchFloorDetailsTask().execute("https://1d7c-59-97-51-97.ngrok-free.app/building/plan_details/");
     }
 
     private class FetchFloorDetailsTask extends AsyncTask<String, Void, List<FloorDetailsModel>> {
@@ -144,7 +144,7 @@ public class FloorDetailsActivity extends AppCompatActivity {
                     foundMatchingProject = true; // Set flag to true if project matches
                     int id = jsonObject.getInt("id");
                     String floorName = jsonObject.getString("floor_or_name");
-                    String image = "https://c47d-59-97-51-97.ngrok-free.app/" + jsonObject.getString("image");
+                    String image = "https://1d7c-59-97-51-97.ngrok-free.app/" + jsonObject.getString("image");
 
                     // Add the floor details to the list
                     dataList.add(new FloorDetailsModel(id, floorName, image));
@@ -166,7 +166,7 @@ public class FloorDetailsActivity extends AppCompatActivity {
         Log.d(TAG, "navigateToPlanDetails: floorId=" + floorId + ", imageUrl=" + imageUrl);
 
         // Construct the URL to pass to PlanDetailsActivity
-        String planDetailsUrl = "https://c47d-59-97-51-97.ngrok-free.app/building/plans/project/" + project + "/" + floorId;
+        String planDetailsUrl = "https://1d7c-59-97-51-97.ngrok-free.app/building/plans/project/" + project + "/" + floorId;
 
         // Create an intent to launch PlanDetailsActivity
         Intent intent = new Intent(FloorDetailsActivity.this, PlanDetailsActivity.class);
@@ -184,7 +184,7 @@ public class FloorDetailsActivity extends AppCompatActivity {
         Log.d(TAG, "navigateToGenerateSaveDetails: floorId=" + floorId + ", imageUrl=" + imageUrl);
 
         // Construct the URL to pass to PlanDetailsActivity
-        String planDetailsUrl = "https://c47d-59-97-51-97.ngrok-free.app/building/plans/project/" + project + "/" + floorId;
+        String planDetailsUrl = "https://1d7c-59-97-51-97.ngrok-free.app/building/plans/project/" + project + "/" + floorId;
 
         Intent intent = new Intent(FloorDetailsActivity.this, GenerateSaveMapActivity.class);
         intent.putExtra("FLOOR_ID", floorId); // Pass the floorId to PlanDetailsActivity

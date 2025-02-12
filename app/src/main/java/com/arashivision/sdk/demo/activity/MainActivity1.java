@@ -55,7 +55,7 @@ public class MainActivity1 extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // Fetch data directly when the activity is created
-        new FetchDataTask().execute("https://c47d-59-97-51-97.ngrok-free.app/building/projectlist/");
+        new FetchDataTask().execute("https://1d7c-59-97-51-97.ngrok-free.app/building/projectlist/");
     }
 
     // AsyncTask to fetch data and images
@@ -116,12 +116,27 @@ public class MainActivity1 extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<YourDataModel> result) {
             if (result != null && !result.isEmpty()) {
-                // Update RecyclerView with fetched data
-                adapter.updateData(result);
+                // Filter data where project ID matches the given project ID
+                List<YourDataModel> filteredData = new ArrayList<>();
+                for (YourDataModel data : result) {
+                    if (data.getProject() == projectId) {
+                        filteredData.add(data);
+                    }
+                }
+
+                // Check if we have any filtered data to display
+                if (!filteredData.isEmpty()) {
+                    // Update RecyclerView with filtered data
+                    adapter.updateData(filteredData);
+                } else {
+                    // Show message if no data matches the project ID
+                    Toast.makeText(MainActivity1.this, "Add data in the project ID", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Toast.makeText(MainActivity1.this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
             }
         }
+
     }
 
     // Method to parse data and images from JSON response
@@ -132,7 +147,7 @@ public class MainActivity1 extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 int project = jsonObject.getInt("project");
-                String image = "https://c47d-59-97-51-97.ngrok-free.app/" + jsonObject.getString("image");
+                String image = "https://1d7c-59-97-51-97.ngrok-free.app/" + jsonObject.getString("image");
                 String totalFloors = jsonObject.isNull("total_floors") ? null : jsonObject.getString("total_floors");
                 String noOfEmployees = jsonObject.isNull("no_of_employees") ? null : jsonObject.getString("no_of_employees");
                 String planDetailsUrl = jsonObject.isNull("plan_details_url") ? null : jsonObject.getString("plan_details_url");
