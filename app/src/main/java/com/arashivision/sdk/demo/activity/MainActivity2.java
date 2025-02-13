@@ -184,11 +184,31 @@ public class MainActivity2 extends AppCompatActivity implements DownloadActivity
 
 
         findViewById(R.id.btn_connect_by_wifi).setOnClickListener(v -> {
+            // Log and Toast when Wi-Fi button is clicked
+            Log.d("WIFI-Button", "WIFI button clicked");
+
+            // Show Toast message immediately
+            Toast.makeText(MainActivity2.this, "Connecting to Wi-Fi...", Toast.LENGTH_SHORT).show();
+
+            // Proceed with network binding and camera opening
             CameraBindNetworkManager.getInstance().bindNetwork(errorCode -> {
+                // Log inside the callback to check if it gets triggered
+                Log.d("WIFI-Button", "Network binding complete, opening camera");
+
+                // Open camera
                 InstaCameraManager.getInstance().openCamera(InstaCameraManager.CONNECT_TYPE_WIFI);
             });
         });
 
+        findViewById(R.id.btn_connect_by_usb).setOnClickListener(v -> {
+            // Log to check if USB button is clicked
+            Log.d("USBButton", "USB button clicked");
+
+            // Show Toast message immediately
+            Toast.makeText(MainActivity2.this, "Connecting to USB...", Toast.LENGTH_SHORT).show();
+
+            // Add USB connection functionality if needed
+        });
 
         findViewById(R.id.btn_normal_record_start).setOnClickListener(v -> {
             Log.d(TAG, "Record Start");

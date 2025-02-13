@@ -17,7 +17,7 @@
         android:gravity="center"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
-        android:text="Plan Details"
+        android:text="Maps"
         android:textColor="#ffffff"
         android:textSize="26sp"
         android:textStyle="bold"
