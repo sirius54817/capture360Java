@@ -68,7 +68,8 @@
         android:layout_marginTop="8dp"
         android:text="Forgot password?"
         android:textColor="@android:color/white"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/btn_login"
@@ -79,7 +80,8 @@
         android:layout_below="@id/forgotpass"
         android:textAllCaps="false"
         android:layout_marginLeft="40dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/partial_border"/>
 
 
     <TextView
@@ -90,6 +92,7 @@
         android:layout_centerHorizontal="true"
         android:text="or sign in with"
         android:textSize="20sp"
-        android:textColor="#fff"/>
+        android:textColor="#fff"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

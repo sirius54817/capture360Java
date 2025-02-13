@@ -13,6 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.arashivision.sdk.demo.R;
 
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +35,7 @@ public class IntroPageActivity extends AppCompatActivity {
     private IntroProjectAdapter adapter;
     private static final String TAG = "IntroPageActivity";
     private int userId;
+    private int lastPosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +68,16 @@ public class IntroPageActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
         // Fetch the projects data filtered by the user_id
-        new FetchProjectsTask().execute("https://8044-59-97-51-97.ngrok-free.app/building/project/");
+        new FetchProjectsTask().execute("https://fd84-59-97-51-97.ngrok-free.app/building/project/");
+    }
+
+    private void setAnimation(View viewToAnimate, int position) {
+        if (position > lastPosition) {
+            // Apply the item animation
+            Animation animation = AnimationUtils.loadAnimation(IntroPageActivity.this, R.anim.item_animation);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;  // Update the lastPosition after animation
+        }
     }
 
     private class FetchProjectsTask extends AsyncTask<String, Void, List<IntroModel>> {

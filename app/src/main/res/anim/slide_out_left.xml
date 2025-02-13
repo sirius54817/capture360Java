@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<set xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!-- Translate with easing for smoother movement -->
-    <translate
-        android:fromXDelta="0%"
-        android:toXDelta="-100%"
-        android:duration="600"
-        android:interpolator="@android:anim/accelerate_decelerate_interpolator" /> <!-- Smooth easing -->
-
-    <!-- Alpha fade-out with delay to sync with translate -->
-    <alpha
-        android:fromAlpha="1.0"
-        android:toAlpha="0.0"
-        android:duration="600"
-        android:startOffset="100" /> <!-- Small delay for smooth transition -->
-</set>
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fromXDelta="0"
+    android:toXDelta="-100%p"
+    android:duration="500" />

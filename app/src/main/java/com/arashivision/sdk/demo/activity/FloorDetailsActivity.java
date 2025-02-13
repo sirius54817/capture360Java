@@ -15,6 +15,11 @@ import com.arashivision.sdk.demo.R;
 import com.arashivision.sdk.demo.model.FloorDetailsModel;
 import com.arashivision.sdk.demo.adapter.FloorDetailsAdapter;
 
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +39,7 @@ public class FloorDetailsActivity extends AppCompatActivity {
     private static final String TAG = "FloorDetailsActivity";
     private int project; // Variable to hold the project ID
     private int projectId; // Variable to hold the project ID
+    private int lastPosition = -1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +68,16 @@ public class FloorDetailsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // Start fetching floor details for the given project ID
-        new FetchFloorDetailsTask().execute("https://8044-59-97-51-97.ngrok-free.app/building/plan_details/");
+        new FetchFloorDetailsTask().execute("https://fd84-59-97-51-97.ngrok-free.app/building/plan_details/");
+    }
+
+    private void setAnimation(View viewToAnimate, int position) {
+        if (position > lastPosition) {
+            // Apply the item animation
+            Animation animation = AnimationUtils.loadAnimation(FloorDetailsActivity.this, R.anim.item_animation);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;  // Update the lastPosition after animation
+        }
     }
 
     private class FetchFloorDetailsTask extends AsyncTask<String, Void, List<FloorDetailsModel>> {
@@ -144,7 +159,7 @@ public class FloorDetailsActivity extends AppCompatActivity {
                     foundMatchingProject = true; // Set flag to true if project matches
                     int id = jsonObject.getInt("id");
                     String floorName = jsonObject.getString("floor_or_name");
-                    String image = "https://8044-59-97-51-97.ngrok-free.app/" + jsonObject.getString("image");
+                    String image = "https://fd84-59-97-51-97.ngrok-free.app/" + jsonObject.getString("image");
 
                     // Add the floor details to the list
                     dataList.add(new FloorDetailsModel(id, floorName, image));
@@ -166,7 +181,7 @@ public class FloorDetailsActivity extends AppCompatActivity {
         Log.d(TAG, "navigateToPlanDetails: floorId=" + floorId + ", imageUrl=" + imageUrl);
 
         // Construct the URL to pass to PlanDetailsActivity
-        String planDetailsUrl = "https://8044-59-97-51-97.ngrok-free.app/building/plans/project/" + project + "/" + floorId;
+        String planDetailsUrl = "https://fd84-59-97-51-97.ngrok-free.app/building/plans/project/" + project + "/" + floorId;
 
         // Create an intent to launch PlanDetailsActivity
         Intent intent = new Intent(FloorDetailsActivity.this, PlanDetailsActivity.class);
@@ -184,7 +199,7 @@ public class FloorDetailsActivity extends AppCompatActivity {
         Log.d(TAG, "navigateToGenerateSaveDetails: floorId=" + floorId + ", imageUrl=" + imageUrl);
 
         // Construct the URL to pass to PlanDetailsActivity
-        String planDetailsUrl = "https://8044-59-97-51-97.ngrok-free.app/building/plans/project/" + project + "/" + floorId;
+        String planDetailsUrl = "https://fd84-59-97-51-97.ngrok-free.app/building/plans/project/" + project + "/" + floorId;
 
         Intent intent = new Intent(FloorDetailsActivity.this, GenerateSaveMapActivity.class);
         intent.putExtra("FLOOR_ID", floorId); // Pass the floorId to PlanDetailsActivity

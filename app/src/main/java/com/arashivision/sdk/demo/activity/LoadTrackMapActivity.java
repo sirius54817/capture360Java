@@ -54,7 +54,7 @@ import java.util.List;
 public class LoadTrackMapActivity extends AppCompatActivity implements SensorEventListener {
 
     private static final int REQUEST_CODE = 1;
-    private static final String API_URL = "https://8044-59-97-51-97.ngrok-free.app/building/getFloorPlan/";
+    private static final String API_URL = "https://fd84-59-97-51-97.ngrok-free.app/building/getFloorPlan/";
     private static final String TAG = "LoadTrackMapActivity";
     private static final float STEP_DISTANCE = 0.5f;  // Define the distance per step (in meters)
 

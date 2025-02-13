@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +22,7 @@ public class FloorDetailsAdapter extends RecyclerView.Adapter<FloorDetailsAdapte
     private List<FloorDetailsModel> floorList;
     private OnItemClickListener onItemClickListener;
     private Context context;
+    private int lastPosition = -1;  // Variable to track the last position for animation
 
     public interface OnItemClickListener {
         void onItemClick(int floorId, String imageUrl);
@@ -43,6 +46,9 @@ public class FloorDetailsAdapter extends RecyclerView.Adapter<FloorDetailsAdapte
         holder.floorNameTextView.setText(floor.getName());
         Picasso.get().load(floor.getImageUrl()).into(holder.floorImageView);
 
+        // Call setAnimation() to trigger animation when the item is bound
+        setAnimation(holder.itemView, position);
+
         holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(floor.getId(), floor.getImageUrl()));
     }
 
@@ -54,6 +60,16 @@ public class FloorDetailsAdapter extends RecyclerView.Adapter<FloorDetailsAdapte
     public void updateData(List<FloorDetailsModel> newFloorList) {
         this.floorList = newFloorList;
         notifyDataSetChanged();
+    }
+
+    // Set animation on the item
+    private void setAnimation(View viewToAnimate, int position) {
+        if (position > lastPosition) {
+            // Apply animation if position is greater than lastPosition
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.item_animation);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;  // Update lastPosition after animation
+        }
     }
 
     public static class FloorViewHolder extends RecyclerView.ViewHolder {

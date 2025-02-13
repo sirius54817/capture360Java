@@ -173,7 +173,7 @@ public class MainActivity extends BaseObserveCameraActivity {
             e.printStackTrace();
         }
 
-        OkGo.<String>post("https://8044-59-97-51-97.ngrok-free.app/building/api/video/upload/")
+        OkGo.<String>post("https://fd84-59-97-51-97.ngrok-free.app/building/api/video/upload/")
                 .tag(this)
                 .upJson(jsonObject.toString())
                 .execute(new StringCallback() {

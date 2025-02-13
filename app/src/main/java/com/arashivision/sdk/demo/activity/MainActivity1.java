@@ -11,6 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.arashivision.sdk.demo.R;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +34,8 @@ public class MainActivity1 extends AppCompatActivity {
     private ProjectAdapter adapter;
     private static final String TAG = "MainActivity1";
     private int projectId; // Member variable to hold the project ID
+    private int lastPosition = -1; // Initial position is set to -1
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +61,17 @@ public class MainActivity1 extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // Fetch data directly when the activity is created
-        new FetchDataTask().execute("https://8044-59-97-51-97.ngrok-free.app/building/projectlist/");
+        new FetchDataTask().execute("https://fd84-59-97-51-97.ngrok-free.app/building/projectlist/");
     }
+
+    private void setAnimation(View viewToAnimate, int position) {
+        if (position > lastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(MainActivity1.this, R.anim.item_animation);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position; // Update lastPosition
+        }
+    }
+
 
     // AsyncTask to fetch data and images
     private class FetchDataTask extends AsyncTask<String, Void, List<YourDataModel>> {
@@ -147,7 +162,7 @@ public class MainActivity1 extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 int project = jsonObject.getInt("project");
-                String image = "https://8044-59-97-51-97.ngrok-free.app/" + jsonObject.getString("image");
+                String image = "https://fd84-59-97-51-97.ngrok-free.app/" + jsonObject.getString("image");
                 String totalFloors = jsonObject.isNull("total_floors") ? null : jsonObject.getString("total_floors");
                 String noOfEmployees = jsonObject.isNull("no_of_employees") ? null : jsonObject.getString("no_of_employees");
                 String planDetailsUrl = jsonObject.isNull("plan_details_url") ? null : jsonObject.getString("plan_details_url");
