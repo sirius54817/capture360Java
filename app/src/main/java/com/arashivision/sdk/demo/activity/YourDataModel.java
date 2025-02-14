@@ -1,22 +1,29 @@
 package com.arashivision.sdk.demo.activity;
 
 public class YourDataModel {
-    private int project;          // Unique identifier for the project
-    private String image;         // URL or resource ID for the image
-    private String totalFloors;   // Total number of floors in the project
-    private String noOfEmployees; // Number of employees in the project
-    private String planDetailsUrl; // URL for the project plan details
+    private Integer id;              // Unique identifier for the building (buildingId)
+    private Integer project;         // Unique identifier for the project
+    private String image;            // URL or resource ID for the image
+    private String totalFloors;      // Total number of floors in the project
+    private String noOfEmployees;    // Number of employees in the project
+    private String planDetailsUrl;   // URL for the project plan details
 
     // Constructor
-    public YourDataModel(int project, String image, String totalFloors, String noOfEmployees) {
+    public YourDataModel(Integer id, Integer project, String image, String totalFloors, String noOfEmployees) {
+        this.id = id;
         this.project = project;
         this.image = image;
         this.totalFloors = totalFloors;
         this.noOfEmployees = noOfEmployees;
     }
 
+    // Getter for id (buildingId)
+    public Integer getId() {
+        return id;
+    }
+
     // Getter for project
-    public int getProject() {
+    public Integer getProject() {
         return project;
     }
 

@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.arashivision.sdk.demo.R;
 
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
@@ -130,24 +129,34 @@ public class IntroPageActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<IntroModel> result) {
-            if (result != null && !result.isEmpty()) {
-                // Filter the projects by checking if user_id matches the user field in the project
-                List<IntroModel> filteredProjects = new ArrayList<>();
-                for (IntroModel project : result) {
-                    if (project.getUser() == userId) {
-                        filteredProjects.add(project);
-                    }
-                }
-
-                if (filteredProjects.isEmpty()) {
-                    Toast.makeText(IntroPageActivity.this, "No projects found for this user", Toast.LENGTH_SHORT).show();
-                }
-
-                // Update the adapter with filtered projects
-                adapter.updateData(filteredProjects);
-            } else {
-                Toast.makeText(IntroPageActivity.this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
+            // Check if result is null or empty and handle appropriately
+            if (result == null || result.isEmpty()) {
+                Toast.makeText(IntroPageActivity.this, "No projects found for this user", Toast.LENGTH_SHORT).show();
+                adapter.updateData(new ArrayList<>()); // Update with an empty list
+                return;
             }
+
+            // Filter the projects by checking if user_id matches the user field in the project
+            List<IntroModel> filteredProjects = new ArrayList<>();
+            for (IntroModel project : result) {
+                // Ensure that the project is not null and contains valid fields
+                if (project != null &&
+                        project.getUser() != null &&
+                        project.getUser() == userId &&
+                        project.getProjectName() != null && !project.getProjectName().isEmpty() &&
+                        project.getCompanyName() != null && !project.getCompanyName().isEmpty() &&
+                        project.getLocation() != null && !project.getLocation().isEmpty()) {
+                    filteredProjects.add(project);
+                }
+            }
+
+            // If no projects were found for this user, show a message
+            if (filteredProjects.isEmpty()) {
+                Toast.makeText(IntroPageActivity.this, "No projects found for this user", Toast.LENGTH_SHORT).show();
+            }
+
+            // Update the adapter with the filtered projects list
+            adapter.updateData(filteredProjects);
         }
     }
 
@@ -158,14 +167,16 @@ public class IntroPageActivity extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 int id = jsonObject.getInt("id");
-                String projectName = jsonObject.getString("project_name");
-                String companyName = jsonObject.getString("company_name");
-                String location = jsonObject.getString("location");
-                int user = jsonObject.getInt("user"); // Assuming 'user' field contains the user_id
+                Integer user = jsonObject.isNull("user") ? null : jsonObject.getInt("user");
+                String projectName = jsonObject.isNull("project_name") ? null : jsonObject.getString("project_name");
+                String companyName = jsonObject.isNull("company_name") ? null : jsonObject.getString("company_name");
+                String location = jsonObject.isNull("location") ? null : jsonObject.getString("location");
 
-                Log.d(TAG, "Parsed project: ID=" + id + ", Name=" + projectName + ", Company=" + companyName + ", Location=" + location + ", User=" + user);
-                IntroModel project = new IntroModel(id, projectName, companyName, location, user);
-                projectList.add(project);
+                // Create project model only if necessary fields are not null
+                if (user != null && projectName != null && companyName != null && location != null) {
+                    IntroModel project = new IntroModel(id, projectName, companyName, location, user);
+                    projectList.add(project);
+                }
             }
         } catch (JSONException e) {
             Log.e(TAG, "Error parsing project data: " + e.getMessage());

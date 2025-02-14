@@ -31,6 +31,7 @@ import java.util.List;
 
 public class PlanDetailsActivity extends AppCompatActivity {
 
+    private static final String TAG = "PlanDetailsActivity";
     private RecyclerView recyclerView;
     private PlanDetailsAdapter adapter;
     private List<YourDataModel1> dataList = new ArrayList<>();
@@ -38,6 +39,7 @@ public class PlanDetailsActivity extends AppCompatActivity {
     private int projectId; // Variable to hold project ID as an integer
     private int project; // Variable to hold project
     private int floorId; // New variable to hold the floorId filter passed from FloorDetailsActivity
+    private int buildingId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +56,20 @@ public class PlanDetailsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(YourDataModel1 data) {
                 // Navigate to MainActivity2 with selected map details
+
+
+                Log.d(TAG, "onItemClick: project: " + project);
+                Log.d(TAG, "onItemClick: PROJECT_ID: " + projectId);
+                Log.d(TAG, "onItemClick: BUILDING_ID: " + buildingId);
+
                 Intent intent = new Intent(PlanDetailsActivity.this, MainActivity2.class);
                 intent.putExtra("MAP_ID", data.getId()); // Pass the ID of the selected map
                 intent.putExtra("PLAN_NAME", data.getName()); // Pass the name of the plan
                 intent.putExtra("project", project); // Pass the project
                 intent.putExtra("PROJECT_ID", projectId); // Pass the projectId
+                intent.putExtra("buildingId", buildingId);
                 startActivity(intent);
+
             }
         });
         recyclerView.setAdapter(adapter);
@@ -68,11 +78,17 @@ public class PlanDetailsActivity extends AppCompatActivity {
         buttonGoToMapping = findViewById(R.id.buttonGoToMapping);
         buttonGoToMapping.setOnClickListener(v -> {
             Log.d("PlanDetailsActivity", "Go to Map button clicked");
+
+            Log.d(TAG, "onItemClick: project: " + project);
+            Log.d(TAG, "onItemClick: PROJECT_ID: " + projectId);
+            Log.d(TAG, "onItemClick: BUILDING_ID: " + buildingId);
+
             Intent intent = new Intent(PlanDetailsActivity.this, GenerateSaveMapActivity.class);
             intent.putExtra("PROJECT_ID", projectId);  // Pass the projectId to GenerateSaveMapActivity
             intent.putExtra("PLAN_NAME", "Your Plan Name"); // Replace with actual plan name from fetched data
             intent.putExtra("MAP_ID", 1); // Replace with actual plan ID based on your data
             intent.putExtra("FLOOR_ID",floorId);
+            intent.putExtra("BUILDING_ID",buildingId);
             startActivity(intent);
         });
 
@@ -101,8 +117,10 @@ public class PlanDetailsActivity extends AppCompatActivity {
         project = intent.getIntExtra("project", -1); // Get project as an integer
         projectId = intent.getIntExtra("PROJECT_ID", -1); // Get projectId as an integer
         floorId = intent.getIntExtra("FLOOR_ID", -1); // Get the floorId filter from FloorDetailsActivity
+        buildingId = intent.getIntExtra("buildingId", -1); // Get the buildingId filter from FloorDetailsActivityF
         Log.d("PlanDetailsActivity", "Received project: " + project + " and project ID: " + projectId);
         Log.d("PlanDetailsActivity", "Received floorId: " + floorId);
+        Log.d("PlanDetailsActivity", "Received buildingId: " + buildingId);
 
         // Fetch data from the API
         fetchDataFromApi("https://fd84-59-97-51-97.ngrok-free.app/building/getFloorPlan/");

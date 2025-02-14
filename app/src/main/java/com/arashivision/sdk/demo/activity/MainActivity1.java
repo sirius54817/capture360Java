@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +35,6 @@ public class MainActivity1 extends AppCompatActivity {
     private int projectId; // Member variable to hold the project ID
     private int lastPosition = -1; // Initial position is set to -1
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +51,8 @@ public class MainActivity1 extends AppCompatActivity {
         // Initialize the adapter with a click listener
         adapter = new ProjectAdapter(new ArrayList<>(), new ProjectAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int project) {
-                navigateToFloorDetails(project, projectId); // Pass both project and projectId
+            public void onItemClick(int projectId, int buildingId) {
+                navigateToFloorDetails(projectId, buildingId); // Pass both projectId and buildingId
             }
         });
 
@@ -71,7 +69,6 @@ public class MainActivity1 extends AppCompatActivity {
             lastPosition = position; // Update lastPosition
         }
     }
-
 
     // AsyncTask to fetch data and images
     private class FetchDataTask extends AsyncTask<String, Void, List<YourDataModel>> {
@@ -134,7 +131,7 @@ public class MainActivity1 extends AppCompatActivity {
                 // Filter data where project ID matches the given project ID
                 List<YourDataModel> filteredData = new ArrayList<>();
                 for (YourDataModel data : result) {
-                    if (data.getProject() == projectId) {
+                    if (data.getProject() != null && data.getProject().equals(projectId)) {
                         filteredData.add(data);
                     }
                 }
@@ -145,13 +142,12 @@ public class MainActivity1 extends AppCompatActivity {
                     adapter.updateData(filteredData);
                 } else {
                     // Show message if no data matches the project ID
-                    Toast.makeText(MainActivity1.this, "Add data in the project ID", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity1.this, "No data found for the given project ID", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Toast.makeText(MainActivity1.this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 
     // Method to parse data and images from JSON response
@@ -161,13 +157,14 @@ public class MainActivity1 extends AppCompatActivity {
             JSONArray jsonArray = new JSONArray(responseData);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                int project = jsonObject.getInt("project");
+                Integer id = jsonObject.isNull("id") ? null : jsonObject.getInt("id");
+                Integer project = jsonObject.isNull("project") ? null : jsonObject.getInt("project");
                 String image = "https://fd84-59-97-51-97.ngrok-free.app/" + jsonObject.getString("image");
                 String totalFloors = jsonObject.isNull("total_floors") ? null : jsonObject.getString("total_floors");
                 String noOfEmployees = jsonObject.isNull("no_of_employees") ? null : jsonObject.getString("no_of_employees");
                 String planDetailsUrl = jsonObject.isNull("plan_details_url") ? null : jsonObject.getString("plan_details_url");
 
-                YourDataModel dataModel = new YourDataModel(project, image, totalFloors, noOfEmployees);
+                YourDataModel dataModel = new YourDataModel(id, project, image, totalFloors, noOfEmployees);
                 dataModel.setPlanDetailsUrl(planDetailsUrl); // Set planDetailsUrl
                 dataList.add(dataModel);
             }
@@ -178,11 +175,12 @@ public class MainActivity1 extends AppCompatActivity {
     }
 
     // Method to navigate to FloorDetailsActivity
-    private void navigateToFloorDetails(int project, int projectId) {
+    private void navigateToFloorDetails(int projectId, int buildingId) {
         Intent intent = new Intent(MainActivity1.this, FloorDetailsActivity.class);
-        intent.putExtra("project", project); // Pass the project
-        intent.putExtra("PROJECT_ID", projectId); // Pass the projectId
-        Log.d(TAG, "Navigating to FloorDetailsActivity with project: " + project + " and projectId: " + projectId);
+        intent.putExtra("projectId", projectId); // Pass the projectId
+        intent.putExtra("project", projectId);
+        intent.putExtra("buildingId", buildingId); // Pass the buildingId
+        Log.d(TAG, "Navigating to FloorDetailsActivity with projectId: " + projectId + " and buildingId: " + buildingId);
         startActivity(intent);
     }
 }

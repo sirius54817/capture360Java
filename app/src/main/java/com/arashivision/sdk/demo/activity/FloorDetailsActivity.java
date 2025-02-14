@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,8 +37,11 @@ public class FloorDetailsActivity extends AppCompatActivity {
     private FloorDetailsAdapter adapter;
     private static final String TAG = "FloorDetailsActivity";
     private int project; // Variable to hold the project ID
-    private int projectId; // Variable to hold the project ID
+    private int buildingId;
     private int lastPosition = -1;
+
+    // Add the project_list variable
+    private int projectListValue = -1;  // Default value if not found
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,9 +55,9 @@ public class FloorDetailsActivity extends AppCompatActivity {
 
         // Retrieve the project and projectId from the intent
         project = getIntent().getIntExtra("project", -1); // Default value if not found
-        projectId = getIntent().getIntExtra("PROJECT_ID", -1); // Default value if not found
+        buildingId = getIntent().getIntExtra("buildingId", -1);
 
-        Log.d(TAG, "Received project: " + project + " and projectId: " + projectId);
+        Log.d(TAG, "Received project: " + project + " and buildingid: " + buildingId);
 
         // Setup the adapter with an empty list and an onItemClickListener
         adapter = new FloorDetailsAdapter(this, new ArrayList<>(), new FloorDetailsAdapter.OnItemClickListener() {
@@ -158,17 +160,23 @@ public class FloorDetailsActivity extends AppCompatActivity {
                 if (fetchedProjectId == project) {
                     foundMatchingProject = true; // Set flag to true if project matches
                     int id = jsonObject.getInt("id");
-                    String floorName = jsonObject.getString("floor_or_name");
+                    String floorName = jsonObject.getString("floor"); // Correct field name
                     String image = "https://fd84-59-97-51-97.ngrok-free.app/" + jsonObject.getString("image");
 
-                    // Add the floor details to the list
-                    dataList.add(new FloorDetailsModel(id, floorName, image));
+                    // Extract the project_list value from the JSON object
+                    projectListValue = jsonObject.optInt("project_list", -1);  // Default to -1 if not found
+
+                    // Filter based on buildingId and project_list value
+                    if (projectListValue == buildingId) {
+                        // Add the floor details to the list if it matches the buildingId and project_list value
+                        dataList.add(new FloorDetailsModel(id, floorName, image));
+                    }
                 }
             }
 
-            if (!foundMatchingProject) {
-                dataList.clear(); // Clear the list if no matching project found
-                dataList.add(new FloorDetailsModel(-1, "Add new data", "")); // Show "Add new data" message
+            // If no matching floor details are found, show an "Add new data" option
+            if (dataList.isEmpty()) {
+                dataList.add(new FloorDetailsModel(-1, "Add new data", "")); // Show "Add new data" message if no match
             }
         } catch (JSONException e) {
             Log.e(TAG, "Error parsing data: " + e.getMessage());
@@ -181,7 +189,7 @@ public class FloorDetailsActivity extends AppCompatActivity {
         Log.d(TAG, "navigateToPlanDetails: floorId=" + floorId + ", imageUrl=" + imageUrl);
 
         // Construct the URL to pass to PlanDetailsActivity
-        String planDetailsUrl = "https://fd84-59-97-51-97.ngrok-free.app/building/plans/project/" + project + "/" + floorId;
+        String planDetailsUrl = "https://fd84-59-97-51-97.ngrok-free.app/building/plans/";
 
         // Create an intent to launch PlanDetailsActivity
         Intent intent = new Intent(FloorDetailsActivity.this, PlanDetailsActivity.class);
@@ -189,28 +197,33 @@ public class FloorDetailsActivity extends AppCompatActivity {
         intent.putExtra("IMAGE_URL", imageUrl); // Pass the image URL
         intent.putExtra("PLAN_DETAILS_URL", planDetailsUrl);  // Pass the URL for plan details
         intent.putExtra("project", project); // Pass the project
-        intent.putExtra("PROJECT_ID", projectId); // Pass the projectId
+        intent.putExtra("PROJECT_LIST", projectListValue); // Pass the project_list value
+        intent.putExtra("buildingId", buildingId);
+
+        Log.d(TAG, "navigateToPlanDetails: project=" + project + ", projectListValue=" + projectListValue + ", buildingId=" + buildingId);
 
         // Start the PlanDetailsActivity
         startActivity(intent);
     }
+
     private void navigateToGenerateSaveDetails(int floorId, String imageUrl) {
         // Log for debugging
         Log.d(TAG, "navigateToGenerateSaveDetails: floorId=" + floorId + ", imageUrl=" + imageUrl);
 
         // Construct the URL to pass to PlanDetailsActivity
-        String planDetailsUrl = "https://fd84-59-97-51-97.ngrok-free.app/building/plans/project/" + project + "/" + floorId;
+        String planDetailsUrl = "https://fd84-59-97-51-97.ngrok-free.app/building/plans/";
 
         Intent intent = new Intent(FloorDetailsActivity.this, GenerateSaveMapActivity.class);
         intent.putExtra("FLOOR_ID", floorId); // Pass the floorId to PlanDetailsActivity
         intent.putExtra("IMAGE_URL", imageUrl); // Pass the image URL
         intent.putExtra("PLAN_DETAILS_URL", planDetailsUrl);  // Pass the URL for plan details
         intent.putExtra("project", project); // Pass the project
-        intent.putExtra("PROJECT_ID", projectId); // Pass the projectId
+        intent.putExtra("PROJECT_LIST", projectListValue); // Pass the project_list value
+        intent.putExtra("buildingId", buildingId);
 
+        Log.d(TAG, "navigateToGenerateSaveDetails: project=" + project + ", projectListValue=" + projectListValue + ", buildingId=" + buildingId);
 
         // Start the PlanDetailsActivity
         startActivity(intent);
     }
-
 }

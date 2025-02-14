@@ -25,7 +25,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
 
     // Define interface for item click callback
     public interface OnItemClickListener {
-        void onItemClick(int projectId);
+        void onItemClick(int projectId, int buildingId);  // Updated to include buildingId
     }
 
     // Constructor for the adapter
@@ -64,7 +64,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectV
         // Set up the click listener for the card item
         holder.itemView.setOnClickListener(v -> {
             if (onItemClickListener != null) {
-                onItemClickListener.onItemClick(project.getProject()); // Pass only projectId when clicked
+                // Use the correct methods to pass both projectId and buildingId
+                onItemClickListener.onItemClick(project.getProject(), project.getId()); // Pass both projectId and buildingId
             }
         });
 

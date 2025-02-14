@@ -5,10 +5,10 @@ public class IntroModel {
     private String projectName;
     private String companyName;
     private String location;
-    private int user; // Add user field to store user_id
+    private Integer user; // Add user field to store user_id
 
     // Updated constructor to include user field
-    public IntroModel(int id, String projectName, String companyName, String location, int user) {
+    public IntroModel(int id, String projectName, String companyName, String location, Integer user) {
         this.id = id;
         this.projectName = projectName;
         this.companyName = companyName;
@@ -32,7 +32,7 @@ public class IntroModel {
         return location;
     }
 
-    public int getUser() {
+    public Integer getUser() {
         return user; // Getter for user_id
     }
 }
