@@ -26,47 +26,69 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="1">
 
-            <LinearLayout
+            <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp">
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:columnCount="2"
+                android:rowCount="3">
 
+                <!-- First Row -->
                 <TextView
                     android:id="@+id/tv_project_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
                     android:text="Project ID : "
                     android:textColor="#333333"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:layout_gravity="start"
+                    android:layout_columnSpan="1" />
 
+                <TextView
+                    android:id="@+id/tv_floor_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="floor ID : "
+                    android:textColor="#333333"
+                    android:textSize="12sp"
+                    android:layout_gravity="end"
+                    android:layout_columnSpan="1" />
+
+                <!-- Second Row -->
                 <TextView
                     android:id="@+id/tv_project"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
                     android:text="Project : "
                     android:textColor="#333333"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:layout_gravity="start"
+                    android:layout_columnSpan="1" />
 
                 <TextView
                     android:id="@+id/tv_plan_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
                     android:text="Map ID : "
                     android:textColor="#333333"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:layout_gravity="end"
+                    android:layout_columnSpan="1" />
 
+                <!-- Third Row: Centered Text -->
                 <TextView
                     android:id="@+id/tv_plan_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Map Name : "
                     android:textColor="#333333"
-                    android:textSize="12sp" />
-            </LinearLayout>
+                    android:textSize="12sp"
+                    android:layout_gravity="center"
+                    android:layout_columnSpan="2" />
+
+            </GridLayout>
+
 
         </androidx.cardview.widget.CardView>
 

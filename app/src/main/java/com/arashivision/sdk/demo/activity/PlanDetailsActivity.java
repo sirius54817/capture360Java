@@ -68,6 +68,7 @@ public class PlanDetailsActivity extends AppCompatActivity {
                 intent.putExtra("project", project); // Pass the project
                 intent.putExtra("PROJECT_ID", projectId); // Pass the projectId
                 intent.putExtra("buildingId", buildingId);
+                intent.putExtra("FLOOR_ID",floorId);
                 startActivity(intent);
 
             }

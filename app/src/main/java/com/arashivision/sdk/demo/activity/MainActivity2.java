@@ -90,11 +90,13 @@ public class MainActivity2 extends AppCompatActivity implements DownloadActivity
     private TextView tvProject;
     private TextView tvPlanName;
     private TextView tvPlanId;
+    private TextView tvfloorId;
     private TextView textResponse;
     private TextView tvStatus;
     private int projectId;
     private int project;
     private int buildingId;
+    private int floorId;
     private String planName;
     private Integer planId; // Use Integer to allow null values
     private TextView mTvCaptureTime;
@@ -151,6 +153,7 @@ public class MainActivity2 extends AppCompatActivity implements DownloadActivity
         tvProject = findViewById(R.id.tv_project);
         tvPlanName = findViewById(R.id.tv_plan_name);
         tvPlanId = findViewById(R.id.tv_plan_id);
+        tvfloorId = findViewById(R.id.tv_floor_id);
         editTextDescription = findViewById(R.id.et_description);
 //        Button buttonCreateFolder = findViewById(R.id.btn_create_folder);
         Button buttonUpload = findViewById(R.id.btn_select_video);
@@ -165,21 +168,25 @@ public class MainActivity2 extends AppCompatActivity implements DownloadActivity
             project = intent.getIntExtra("project", -1);
             planName = intent.getStringExtra("PLAN_NAME");
             planId = (Integer) intent.getSerializableExtra("MAP_ID");
+
+
             buildingId = intent.getIntExtra("buildingId", -1);
+            floorId = intent.getIntExtra("FLOOR_ID", -1);
 
             Log.d(TAG, "Received Project ID: " + projectId);
             Log.d(TAG, "onCreate: Received projectId = " + projectId + " in MainActivity2");
             Log.d(TAG, "Received Building ID: " + buildingId);
-
+            Log.d(TAG, "Received Floor ID: " + floorId);
 
             Log.d(TAG, "Received Plan Name: " + planName);
             Log.d(TAG, "Received Plan ID: " + planId);
 
             // Display the current project ID, plan name, and plan ID
-            tvProjectId.setText("Project ID: " + (project != -1 ? String.valueOf(project) : "Not Available"));
-            tvProject.setText("Project: " + (buildingId != -1 ? String.valueOf(buildingId) : "Not Available"));
-            tvPlanName.setText("Plan Name: " + (planName != null ? planName : "Not Available"));
-            tvPlanId.setText("Plan ID: " + (planId != null ? planId.toString() : "Not Available"));
+            tvProjectId.setText("Project : " + (project != -1 ? String.valueOf(project) : "Not Available"));
+            tvProject.setText("Building : " + (buildingId != -1 ? String.valueOf(buildingId) : "Not Available"));
+            tvfloorId.setText("Floor : " + (floorId != -1 ? String.valueOf(floorId) : "Not Available"));
+            tvPlanId.setText("Map : " + (planId != null ? planId.toString() : "Not Available"));
+            tvPlanName.setText("Map Name : " + (planName != null ? planName : "Not Available"));
         } else {
             Log.e(TAG, "Intent is null");
         }
