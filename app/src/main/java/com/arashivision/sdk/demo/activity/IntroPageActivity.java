@@ -67,7 +67,7 @@ public class IntroPageActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
         // Fetch the projects data filtered by the user_id
-        new FetchProjectsTask().execute("https://fd84-59-97-51-97.ngrok-free.app/building/project/");
+        new FetchProjectsTask().execute("https://api.capture360.ai/building/project/");
     }
 
     private void setAnimation(View viewToAnimate, int position) {

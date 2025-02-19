@@ -124,7 +124,7 @@ public class PlanDetailsActivity extends AppCompatActivity {
         Log.d("PlanDetailsActivity", "Received buildingId: " + buildingId);
 
         // Fetch data from the API
-        fetchDataFromApi("https://fd84-59-97-51-97.ngrok-free.app/building/getFloorPlan/");
+        fetchDataFromApi("https://api.capture360.ai/building/getFloorPlan/");
     }
 
     private void fetchDataFromApi(String apiUrl) {

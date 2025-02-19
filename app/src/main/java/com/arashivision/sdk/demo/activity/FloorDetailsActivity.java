@@ -70,7 +70,7 @@ public class FloorDetailsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // Start fetching floor details for the given project ID
-        new FetchFloorDetailsTask().execute("https://fd84-59-97-51-97.ngrok-free.app/building/plan_details/");
+        new FetchFloorDetailsTask().execute("https://api.capture360.ai/building/plan_details/");
     }
 
     private void setAnimation(View viewToAnimate, int position) {
@@ -161,7 +161,7 @@ public class FloorDetailsActivity extends AppCompatActivity {
                     foundMatchingProject = true; // Set flag to true if project matches
                     int id = jsonObject.getInt("id");
                     String floorName = jsonObject.getString("floor"); // Correct field name
-                    String image = "https://fd84-59-97-51-97.ngrok-free.app/" + jsonObject.getString("image");
+                    String image = "https://api.capture360.ai/" + jsonObject.getString("image");
 
                     // Extract the project_list value from the JSON object
                     projectListValue = jsonObject.optInt("project_list", -1);  // Default to -1 if not found
@@ -189,7 +189,7 @@ public class FloorDetailsActivity extends AppCompatActivity {
         Log.d(TAG, "navigateToPlanDetails: floorId=" + floorId + ", imageUrl=" + imageUrl);
 
         // Construct the URL to pass to PlanDetailsActivity
-        String planDetailsUrl = "https://fd84-59-97-51-97.ngrok-free.app/building/plans/";
+        String planDetailsUrl = "https://api.capture360.ai/building/plans/";
 
         // Create an intent to launch PlanDetailsActivity
         Intent intent = new Intent(FloorDetailsActivity.this, PlanDetailsActivity.class);
@@ -211,7 +211,7 @@ public class FloorDetailsActivity extends AppCompatActivity {
         Log.d(TAG, "navigateToGenerateSaveDetails: floorId=" + floorId + ", imageUrl=" + imageUrl);
 
         // Construct the URL to pass to PlanDetailsActivity
-        String planDetailsUrl = "https://fd84-59-97-51-97.ngrok-free.app/building/plans/";
+        String planDetailsUrl = "https://api.capture360.ai/building/plans/";
 
         Intent intent = new Intent(FloorDetailsActivity.this, GenerateSaveMapActivity.class);
         intent.putExtra("FLOOR_ID", floorId); // Pass the floorId to PlanDetailsActivity

@@ -59,7 +59,7 @@ public class MainActivity1 extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // Fetch data directly when the activity is created
-        new FetchDataTask().execute("https://fd84-59-97-51-97.ngrok-free.app/building/projectlist/");
+        new FetchDataTask().execute("https://api.capture360.ai/building/projectlist/");
     }
 
     private void setAnimation(View viewToAnimate, int position) {
@@ -159,7 +159,7 @@ public class MainActivity1 extends AppCompatActivity {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 Integer id = jsonObject.isNull("id") ? null : jsonObject.getInt("id");
                 Integer project = jsonObject.isNull("project") ? null : jsonObject.getInt("project");
-                String image = "https://fd84-59-97-51-97.ngrok-free.app/" + jsonObject.getString("image");
+                String image = "https://api.capture360.ai/" + jsonObject.getString("image");
                 String totalFloors = jsonObject.isNull("total_floors") ? null : jsonObject.getString("total_floors");
                 String noOfEmployees = jsonObject.isNull("no_of_employees") ? null : jsonObject.getString("no_of_employees");
                 String planDetailsUrl = jsonObject.isNull("plan_details_url") ? null : jsonObject.getString("plan_details_url");
